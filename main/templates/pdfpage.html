@@ -1,0 +1,92 @@
+{% extends "extandable.html" %}
+{% load static %}
+
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/pdfpage.css' %}">{% endblock %}
+
+{% block extendable %}
+<div class="containermy" style="height:100%; position: relative;">
+    <select class="my-form-select" id="languageSelector" style="position: absolute; bottom: 0; right: 0; margin: 20px;">
+        <option value="BG">Болгарский</option>
+        <option value="CS">Чешский</option>
+        <option value="DA">Датский</option>
+        <option value="DE">Немецкий</option>
+        <option value="EL">Греческий</option>
+        <option value="EN">Английский (Универсальный)</option>
+        <option value="EN-GB">Английский (Британский)</option>
+        <option value="EN-US">Английский (Американский)</option>
+        <option value="ES">Испанский</option>
+        <option value="ET">Эстонский</option>
+        <option value="FI">Финский</option>
+        <option value="FR">Французский</option>
+        <option value="HU">Венгерский</option>
+        <option value="ID">Индонезийский</option>
+        <option value="IT">Итальянский</option>
+        <option value="JA">Японский</option>
+        <option value="KO">Корейский</option>
+        <option value="LT">Литовский</option>
+        <option value="LV">Латышский</option>
+        <option value="NB">Норвежский (Букмол)</option>
+        <option value="NL">Голландский</option>
+        <option value="PL">Польский</option>
+        <option value="PT">Португальский (Универсальный)</option>
+        <option value="PT-BR">Португальский (Бразильский)</option>
+        <option value="PT-PT">Португальский (Все варианты, кроме бразильского)</option>
+        <option value="RO">Румынский</option>
+        <option value="RU" selected>Русский</option>
+        <option value="SK">Словацкий</option>
+        <option value="SL">Словенский</option>
+        <option value="SV">Шведский</option>
+        <option value="TR">Турецкий</option>
+        <option value="UK">Украинский</option>
+        <option value="ZH">Китайский (упрощенный)</option>
+    </select>
+    <iframe width="100%" height="100%" id="pdfjs" src="{{ file.file.url }}"></iframe>
+    <div class="loading-overlay" id="loadingOverlay" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none;">
+        <p>Идёт обработка файла, подождите...</p>
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block footer %}
+
+{% endblock %}
+
+{% block script %}
+<script>
+$(document).ready(function() {
+    $('#languageSelector').on('change', function() {
+        var selectedLanguage = $(this).val();
+        
+        var url = window.location.href;
+        var parts = url.split('/');
+        var fileId = parts[parts.length - 1];
+
+        var loadingOverlay = $('#loadingOverlay');
+
+        loadingOverlay.show();
+
+        $.ajax({
+            type: 'POST',
+            url: '/pdfpage/' + fileId,
+            data: { language: selectedLanguage },
+            success: function(data) {
+                if (data.success) {
+                    // ничего т.к. произойдёт редирект на страницу
+                } else {
+                    alert('Не удалось получить перевод файла!');
+                }
+            },
+            error: function() {
+                alert('Во время выполнения запроса произошла ошибка!');
+            },
+            complete: function() {
+                loadingOverlay.hide();
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+</html>

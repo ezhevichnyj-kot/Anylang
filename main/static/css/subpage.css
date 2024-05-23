@@ -1,0 +1,24 @@
+.hugetxt{
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 141.9%;
+    color: #000000;
+}
+
+.custom-btn {
+    width: 511px;
+    height: 151px;
+    border: 5px solid #00A3FF;
+    border-radius: 88px;
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 58px;
+    background-color: #ffffff;
+    color: #000000;
+    text-align: center;
+    text-decoration: none;
+}

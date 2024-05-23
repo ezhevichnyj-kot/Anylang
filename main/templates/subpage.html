@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends "extandable.html" %}
+{% load static %}
+
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/subpage.css' %}">{% endblock %}
+
+
+{% block extendable %}
+<div class="container" style="margin-top: 139px;">
+    <p class="hugetxt">Congratulations!</p>
+    <p class="hugetxt">Username, ur current sub level is <span style="color: #00A3FF">cocksucker</span>!</p>
+    <div style="display: flex; justify-content: center; align-items: center; margin-top: 124px;"><button class="custom-btn">Change my sub!</button></div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+
+</script>
+{% endblock %}
+</html>

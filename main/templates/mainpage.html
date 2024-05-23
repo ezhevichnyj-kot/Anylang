@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% extends "extandable.html" %}
+{% load static %}
+
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/mainpage.css' %}">{% endblock %}
+
+
+{% block extendable %}
+<div class="container" style="margin-top: 124px;">
+    <div class="hugetxt-main" style="margin-bottom: 71px;">Развивайтесь. Всегда.</div>
+    <div class="regulartxt-main" style="margin-bottom: 57px;">Вместе с нами у Вас не возникнет проблем с необходимостью изучения языка или поиском перевода статьи, ведь всё, что Вам нужно - уже у нас в библиотеке!</div>
+    <div class="searchfield_holder_sl" style="margin-bottom: 57px;">
+        <form class="input-groupmy searchfield_form regulartxtgray-main" style="font-size: 24px;">
+            <input class="searchfield" name="file_name" type="text" placeholder="Напишите что-нибудь..." id="searchfield" style="width: 460px;">
+        </form>
+        <button onclick="update_search();" method="get" style="width: 59px; height: 59px; background: none; border: none; margin-right: 17px;">
+            <img src="{% static 'images/icons/image 1.png' %}" alt="find" style="width: 45px; height: 45px;">
+        </button>
+    </div>
+    <div class="regulartxtgray-main" style="margin-bottom: 98px;">Похоже, под множеством причудливых терминов скрывается что-то интересное... давайте посмотрим!</div>
+    {% for file in all_files %}
+
+        <a href="{% url 'pdf_page' file.id %}">
+            <div class="articlebox row">
+                <div class="col-2 imgholder"><img src="{% static 'images/icons/image 2.png' %}" alt="pic"></div>
+                <div class="col-10 txtholder">
+                    <p class="regulartxt-main">{{ file.name }}</p>
+                    <p class="regulartxtgray-main">Очень интересный текст под названием статьи! Очень интересный текст под названием статьи! Очень интересный текст под названием статьи! </p>
+                </div>
+            </div>
+        </a></br>
+    {% endfor %}
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    function update_search() {
+        var searchField = document.getElementById('searchfield');
+        var dropdownList = document.getElementById('dropdownList');
+
+        if (searchField.value.trim() == "" && dropdownList.value.length == 0) {
+            alert("напиши что-то");
+            return false;
+    	}
+
+    	$.ajax({
+           type: "POST",
+           url: '/test1',
+           data: {
+                'search_text': searchField.value.trim(),
+                csrfmiddlewaretoken: getCookie('csrftoken')
+           },
+           dataType: 'json',
+           success: function(response) {
+                $('#articleContainer').empty();
+                response.forEach(function(article) {
+                    var articleHtml = `
+                        <a href="${article.url}">
+                            <div class="articlebox row">
+                                <div class="col-2 imgholder"><img src="{% static 'images/icons/image 2.png' %}" alt="pic"></div>
+                                <div class="col-10 txtholder">
+                                    <p class="regulartxt-main">${article.title}</p>
+                                    <p class="regulartxtgray-main">${article.description}</p>
+                                </div>
+                            </div>
+                        </a>
+                    `;
+                    $('#articleContainer').append(articleHtml);
+                });
+           }
+        });
+    }
+</script>
+{% endblock %}
+</html>

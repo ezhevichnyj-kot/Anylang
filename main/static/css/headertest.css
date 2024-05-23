@@ -1,0 +1,118 @@
+header {
+    width: 100%;
+    height: 110px;
+    margin: 0;
+    justify-content: space-between;
+    border-bottom: 2px solid black;
+}
+
+.right_aligner {
+    height: 100%;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.headertxt{
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 141.9%;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.alignertxt{
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+}
+
+.link {
+    text-decoration: none;
+    color: #000000;
+}
+
+.link:hover {
+    color: #000000;
+}
+
+.headerbtn{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: #A0E3FF;
+    border: 1px solid #000000;
+    border-radius: 16px;
+    width: 225px;
+    height: 49px;
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    color: #000000;
+}
+
+.footertxt{
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 141.9%;
+    color: #000000;
+}
+
+main {
+    flex: 1; /* Занимает всю доступную высоту */
+    padding: 20px;
+}
+
+footer {
+    border-top: 2px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    height: 90px;
+    margin-top: 80px;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.lefttxt, .righttxt {
+    margin: 0 120px;
+}
+
+.modaltxt{
+    font-family: 'Inria Serif';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 141.9%;
+    color: #000000;
+}
+
+.modal-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border-bottom: 0;
+}
+
+.modal-header .close {
+    align-self: flex-end;
+}

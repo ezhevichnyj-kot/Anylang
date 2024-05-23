@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+{% block head %}
+<head>
+    {% block links %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100&family=Montserrat+Alternates:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/headertest.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    {% block extra_head %}{% endblock %}
+    {% endblock %}
+
+    {% block meta%}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% endblock %}
+
+    {% block title %}
+    <title>extendable</title>
+    {% endblock %}
+</head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block body %}
+<body>
+{% endblock %}
+    {% block header %}
+    <header style="display: flex; align-items: center;">
+        <a href="{% url 'main_page' %}" id="mainp" style="margin-left: 50px;">
+            <img src="{% static 'images/icons/LOGO.png' %}" style="width: 144px;
+            height: 100px; vertical-align: baseline;">
+        </a>
+        <div style="margin-left: 42px;">
+            <span class="headertxt">Любой текст, любой язык!</span>
+        </div>
+
+        <div class="right_aligner">
+            {% block header_buttons %}
+            <a class="link alignertxt" style="margin-right: 94px;" id="artic" href="{% url 'load_page' %}"><div class="headerbtn">Добавить перевод</div></a>
+            <a class="link alignertxt" style="margin-right: 57px;" id="about" href="{% url 'main_page' %}">О нас</a>
+            {% endblock %}
+        </div>
+        <div style="width:100px"></div>
+    </header>
+    {% endblock %}
+    <main>
+        {% block extendable %}
+        {% endblock %}
+    </main>
+    {% block script %}
+    {% endblock %}
+    {% block footer %}
+    <footer>
+        <div class="lefttxt footertxt">Тут добавляют всякий важный текст</div>
+        <div class="righttxt footertxt">но я просто пожелаю Вам добра!</div>
+    </footer>
+    {% endblock %}
+</body>
+</html>

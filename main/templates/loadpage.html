@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+{% extends "extandable.html" %}
+{% load static %}
+
+{% block extra_head %}<link rel="stylesheet" href="{% static 'css/loadpage.css' %}">{% endblock %}
+
+
+{% block extendable %}
+<div class="container" style="margin-top: 139px;">
+    <div class="loading-overlay" id="loadingOverlay" style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none;">
+        <p>Идёт обработка файла, подождите...</p>
+    </div>
+    <p class="hugetxt">Расширяйте границы знаний!</p>
+    <p class="maintxt">Нажмите на кнопку, чтобы загрузить новую статью, и мы переведем ее автоматически</p>
+    <form id="upload-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="pdf-file" id="pdf-file-label" class="custom-btn">Выберите файл</label>
+        <input type="file" id="pdf-file" name="pdf" accept=".pdf" style="display:none;">
+        <select class="my-form-select" id="dropdownList" name="language">
+            <option value="BG">Болгарский</option>
+            <option value="CS">Чешский</option>
+            <option value="DA">Датский</option>
+            <option value="DE">Немецкий</option>
+            <option value="EL">Греческий</option>
+            <option value="EN">Английский (Универсальный)</option>
+            <option value="EN-GB">Английский (Британский)</option>
+            <option value="EN-US">Английский (Американский)</option>
+            <option value="ES">Испанский</option>
+            <option value="ET">Эстонский</option>
+            <option value="FI">Финский</option>
+            <option value="FR">Французский</option>
+            <option value="HU">Венгерский</option>
+            <option value="ID">Индонезийский</option>
+            <option value="IT">Итальянский</option>
+            <option value="JA">Японский</option>
+            <option value="KO">Корейский</option>
+            <option value="LT">Литовский</option>
+            <option value="LV">Латышский</option>
+            <option value="NB">Норвежский (Букмол)</option>
+            <option value="NL">Голландский</option>
+            <option value="PL">Польский</option>
+            <option value="PT">Португальский (Универсальный)</option>
+            <option value="PT-BR">Португальский (Бразильский)</option>
+            <option value="PT-PT">Португальский (Все варианты, кроме бразильского)</option>
+            <option value="RO">Румынский</option>
+            <option value="RU" selected>Русский</option>
+            <option value="SK">Словацкий</option>
+            <option value="SL">Словенский</option>
+            <option value="SV">Шведский</option>
+            <option value="TR">Турецкий</option>
+            <option value="UK">Украинский</option>
+            <option value="ZH">Китайский (упрощенный)</option>
+        </select>
+        <div style="display:flex;align-items: baseline;margin-top: 15px;">
+            <p class="regulartxtgray-main">Введите название статьи:</p>
+            <input name="articlename" type="text" placeholder="Напишите что-нибудь..." id="articlenamefield">
+        </div>
+        <button type="submit" class="custom-btn" id="btnload" style="margin-top: 50px;">Загрузить файл</button>
+    </form>
+    <div id="error-message" class="alert alert-danger" style="display: none;"></div>
+    <div id="success-message" class="alert alert-success" style="display: none;"></div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    $(document).ready(function() {
+      // Скрываем кнопку при загрузке страницы
+      $('#btnload').hide();
+
+      // При изменении файла, показываем кнопку
+      $('#pdf-file').change(function() {
+        $('#btnload').show();
+      });
+    });
+    $(document).ready(function() {
+    $('#upload-form').submit(function(e) {
+        e.preventDefault();
+        var pdfInput = document.getElementById('pdf-file');
+        var pdfFile = pdfInput.files[0];
+
+        if (!pdfFile) {
+            $('#error-message').text('Пожалуйста, выберите файл PDF для загрузки.').show();
+            $('#success-message').hide();
+            return;
+        }
+
+        if (pdfFile.size > 8 * 1024 * 1024) {
+            $('#error-message').text('Файл слишком большой. Максимальный размер: 8 МБ.').show();
+            $('#success-message').hide();
+            return;
+        }
+
+        var formData = new FormData(this);
+        var loadingOverlay = $('#loadingOverlay');
+        loadingOverlay.show();
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/loadpage',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                if (data.success) {
+                // ничего т.к. будет произведён редирект
+                } else {
+                    $('#error-message').text(data.error).show();
+                    $('#success-message').hide();
+                }
+            },
+            error: function() {
+                $('#error-message').text('Произошла ошибка при отправке запроса').show();
+                $('#success-message').hide();
+            },
+            complete: function() {
+                loadingOverlay.hide();
+            }
+        });
+    });
+});
+</script>
+{% endblock %}
+</html>
